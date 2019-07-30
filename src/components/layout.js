@@ -1,52 +1,35 @@
-/**
- * Layout component that queries for data
- * with Gatsby's useStaticQuery component
- *
- * See: https://www.gatsbyjs.org/docs/use-static-query/
- */
+import React from 'react'
+import { ThemeProvider } from 'styled-components'
+import Helmet from 'react-helmet'
+import favicon from '../images/favicon.ico'
+import GlobalStyle from '../styles/global'
+import theme from '../styles/theme'
+import config from '../utils/siteConfig'
+import Menu from '../components/Menu'
+import Footer from '../components/Footer'
 
-import React from "react"
-import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
-
-import Header from "./header"
-import "./layout.css"
-
-const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `)
-
+const Template = ({ children }) => {
   return (
-    <>
-      <Header siteTitle={data.site.siteMetadata.title} />
-      <div
-        style={{
-          margin: `0 auto`,
-          maxWidth: 960,
-          padding: `0px 1.0875rem 1.45rem`,
-          paddingTop: 0,
-        }}
-      >
-        <main>{children}</main>
-        <footer>
-          © {new Date().getFullYear()}, Built with
-          {` `}
-          <a href="https://www.gatsbyjs.org">Gatsby</a>
-        </footer>
-      </div>
-    </>
+    <div className="siteRoot">
+      <Helmet>
+        <title>{config.siteTitle}</title>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href={favicon} />
+      </Helmet>
+
+      <ThemeProvider theme={theme}>
+        <>
+          <div className="siteContent">
+            <Menu />
+            {children}
+          </div>
+          <Footer />
+        </>
+      </ThemeProvider>
+      <GlobalStyle />
+    </div>
   )
 }
 
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
-}
-
-export default Layout
+export default Template
